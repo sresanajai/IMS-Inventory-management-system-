@@ -57,6 +57,7 @@ while product_id:
           break
     else:
       print("***********Thank you for using our service***********")
+      break
   else:
     product_id=int(input("Enter the Product ID:"))
     if product_id>130:
