@@ -28,22 +28,31 @@ inventory={101:{"Name":"kitkat","Rate":10,"Quantity":15,"Status":"In Stock","Man
            126:{"Name":"Jam","Rate":25,"Quantity":25,"Status":"In Stock","Manufacturer":"ITC","Manufacture_Date":"3/11/21","Expiry_Date":"3/11/22"},
            127:{"Name":"ketchup","Rate":25,"Quantity":20,"Status":"In Stock","Manufacturer":"ITC","Manufacture_Date":"4/11/21","Expiry_Date":"4/11/22"},
            128:{"Name":"Potato chips","Rate":5,"Quantity":25,"Status":"In Stock","Manufacturer":"Subam","Manufacture_Date":"5/12/21","Expiry_Date":"5/12/22"},
-           129:{"Name":"5 star","Rate":100,"Quantity":10,"Status":"In Stock","Manufacturer":"ITC","Manufacture_Date":"16/12/21","Expiry_Date":"16/12/22"},
-           130:{"Name":"5 star","Rate":5,"Quantity":25,"Status":"In Stock","Manufacturer":"ITC","Manufacture_Date":"20/12/20","Expiry_Date":"20/12/22"}}
-manager_or_customer=input("manger or customer...? ")
-while product_id:
+           129:{"Name":"Choco","Rate":100,"Quantity":10,"Status":"In Stock","Manufacturer":"ITC","Manufacture_Date":"16/12/21","Expiry_Date":"16/12/22"},
+           130:{"Name":"cheetos","Rate":5,"Quantity":25,"Status":"In Stock","Manufacturer":"ITC","Manufacture_Date":"20/12/20","Expiry_Date":"20/12/22"}}
+manager_or_customer=input("manager or customer...? ")                    #customer or manager mode prompt
+while manager_or_customer:
   if manager_or_customer=='manager':
     product_id=int(input("Enter the Product ID:"))
-    if product_id>130:
-      print("No item found....")
+    if product_id>130:                                                  #checking if id exists, if not add new item
+      print("No item found....", "create new Product Id:")
+      new_add=int(input("How many item to be added ? "))
+      for add in range(new_add):
+        new_id=input("Enter new product Id to add in database>>>>>")
+        new_name=str(input("Enter the product name: "))
+        new_rate=int(input("Enter the Rate: "))
+        new_quantity=int(input("Enter the quantity"))
+        new_manufacturer=str(input("Enter the Manufactureer Name: "))
+        data={new_id:{"Name":new_name,"Rate":new_rate,"Quantity":new_quantity,"Status":"In Stock","Manufacturer":new_manufacturer,"Manufacture_Date":time.ctime(),"Expiry_Date":"Two years from manufaturing date"}}
+        inventory.update(data)                                         #updating the inventory with new data
       break
     else:
-      print(inventory[product_id])
+      print(inventory[product_id])                                      # if mode is customer then control goes here for billing process
       print("Rate of the item:",inventory[product_id]["Rate"])
       print("Total quantity of item available",inventory[product_id]["Quantity"])
       want_to_continue=input("Want to know more...type yes:")
 
-    if want_to_continue=='yes':
+    if want_to_continue=='yes':                                 #if user wants to add more items to bill
       new_product_id=int(input("Enter the Product ID:"))
       if product_id>130:
         print('No item found....')
@@ -53,14 +62,15 @@ while product_id:
         print("Rate of the item:",inventory[product_id]["Rate"])
         print("Total quantity of item available",inventory[product_id]["Quantity"])
         want_to_continue=input("Want to know more...type yes:")
-        if want_to_continue=='no':
+        if want_to_continue=='no':                              # if user doesn't want to add more items
           break
     else:
       print("***********Thank you for using our service***********")
       break
   else:
+    pass
     product_id=int(input("Enter the Product ID:"))
-    if product_id>130:
+    if product_id>131:
       print("no item found....")
       break
     else:
@@ -68,7 +78,7 @@ while product_id:
       if quantity>inventory[product_id]['Quantity']:
         print('Reduce some quantity or come back after some time',"Out of Stock!!")
         break
-      else:
+      else:                                                   #Billing process
         inventory[product_id]["Quantity"]=inventory[product_id]['Quantity']-quantity
         print("Bill: ",inventory[product_id]["Name"])
         print("Rate: ",inventory[product_id]["Rate"]) 
@@ -84,7 +94,7 @@ while product_id:
           break
 print("**********Thank you***********")
 js=json.dumps(inventory)
-file_handle=open('inventory.json','w')
+file_handle=open('inventory.json','w')              # binding it all to json file
 file_handle.write(js)
 file_handle.close()
 
